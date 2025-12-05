@@ -23,7 +23,6 @@ func init() {
 func dayOne() {
 
 	counter := START
-	gap := MAX - MIN + 1
 
 	f, err := os.Open("inputs/day1.txt")
 	if err != nil {
@@ -37,26 +36,36 @@ func dayOne() {
 		if err != nil {
 			log.Fatal(err)
 		}
+		clicks := int(value)
 
 		switch scanner.Text()[0] {
 		case 'R':
-			counter = (counter + int(value)) % gap
-			slog.Debug(fmt.Sprintf("Spinning right %d to %d", value, counter))
-		case 'L':
-			counter = (counter - int(value)) % gap
-			if counter < MIN {
-				counter = gap + counter
+			for clicks > 0 {
+				counter++
+				clicks--
+				if counter > MAX {
+					counter = MIN
+					zeroes++
+				}
+
 			}
-			slog.Debug(fmt.Sprintf("Spinning left %d to %d", value, counter))
+		case 'L':
+			for clicks > 0 {
+				counter--
+				clicks--
+				if counter == MIN {
+					zeroes++
+				}
+				if counter < MIN {
+					counter = MAX
+				}
+			}
 		default:
 			slog.Error("Day 1 - Puzzle 1: Improper Read")
 			return
 		}
 
-		if counter == 0 {
-			zeroes += 1
-			slog.Debug("Day 1 - Puzzle 1: Got a zero!")
-		}
+		slog.Debug(fmt.Sprintf("Zeroes: %d", zeroes))
 	}
 
 	slog.Info(fmt.Sprintf("Day 1 - Puzzle 1 result: %d", zeroes))
