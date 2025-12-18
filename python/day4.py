@@ -19,7 +19,6 @@ def remove_rolls(image) -> tuple[int, np.ndarray]:
                 sub_arr = image[min_x:max_x, min_y:max_y]
                 neigh = np.sum(sub_arr) - 1
                 if neigh < max_n:
-                    print(sub_arr)
                     n_targets += 1
                     image[x][y] = 0
 
